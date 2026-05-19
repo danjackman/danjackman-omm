@@ -3,13 +3,13 @@ import { motion, AnimatePresence } from 'motion/react';
 import { Mail, MapPin, Music, ChevronRight, ChevronLeft, X, CheckCircle2, Loader2 } from 'lucide-react';
 
 const cities = [
-  { name: 'Los Angeles', image: '/src/assets/images/map_la_1779206307407.png' },
-  { name: 'Seattle', image: '/src/assets/images/map_seattle_1779206321891.png' },
-  { name: 'San Francisco', image: '/src/assets/images/map_sf_1779206336978.png' },
-  { name: 'Dallas', image: '/src/assets/images/map_dallas_1779206350617.png' },
-  { name: 'Chicago', image: '/src/assets/images/map_chicago_1779206365221.png' },
-  { name: 'Nashville', image: '/src/assets/images/map_nashville_1779206381106.png' },
-  { name: 'New York City', image: '/src/assets/images/map_nyc_1779206398350.png' },
+  { name: 'Los Angeles', image: '/images/map_la_1779206307407.png' },
+  { name: 'Seattle', image: '/images/map_seattle_1779206321891.png' },
+  { name: 'San Francisco', image: '/images/map_sf_1779206336978.png' },
+  { name: 'Dallas', image: '/images/map_dallas_1779206350617.png' },
+  { name: 'Chicago', image: '/images/map_chicago_1779206365221.png' },
+  { name: 'Nashville', image: '/images/map_nashville_1779206381106.png' },
+  { name: 'New York City', image: '/images/map_nyc_1779206398350.png' },
 ];
 
 export default function App() {
