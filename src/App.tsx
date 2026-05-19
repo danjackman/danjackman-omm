@@ -1,8 +1,8 @@
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { Mail, MapPin, Music, ChevronRight, ChevronLeft, X, CheckCircle2, Loader2 } from 'lucide-react';
 
-import logo from './assets/logo.png';
+// Import map images
 import mapLa from './assets/images/map_la_1779206307407.png';
 import mapSeattle from './assets/images/map_seattle_1779206321891.png';
 import mapSf from './assets/images/map_sf_1779206336978.png';
@@ -46,8 +46,10 @@ export default function App() {
       setCurrentCityIndex((prev) => (prev + 1) % cities.length);
     }, 5000);
 
-    // Shuffle performance images
-    const shuffled = [...performanceImages].sort(() => Math.random() - 0.5);
+    // Shuffle performance images and take 4
+    const shuffled = [...performanceImages]
+      .sort(() => Math.random() - 0.5)
+      .slice(0, 4);
     setShuffledGallery(shuffled);
 
     return () => clearInterval(timer);
@@ -96,15 +98,9 @@ export default function App() {
           animate={{ opacity: 1, y: 0 }}
           className="flex items-center gap-3"
         >
-          <img 
-            src={logo} 
-            alt="Open Mic Mapper Logo" 
-            className="h-12 md:h-16 object-contain"
-            onError={(e) => {
-              // Fallback for demo if logo is missing
-              (e.target as HTMLImageElement).src = 'https://placehold.co/200x80/01041b/FFFFFF?text=Open+Mic+Mapper';
-            }}
-          />
+          <h1 className="text-3xl md:text-4xl font-bold font-display text-brand-blue tracking-tight">
+            OpenMicMapper.com
+          </h1>
         </motion.div>
       </header>
 
@@ -229,8 +225,10 @@ export default function App() {
           </div>
         </div>
 
-        {/* Randomized Performance Gallery */}
-        <section className="w-full mt-24 mb-12">
+      </main>
+
+      {/* Randomized Performance Gallery Overlapping Footer */}
+      <div className="relative z-10 w-full max-w-7xl mx-auto px-6 -mb-16">
           <motion.div 
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -244,7 +242,7 @@ export default function App() {
                 whileInView={{ opacity: 1, scale: 1 }}
                 viewport={{ once: true }}
                 transition={{ delay: idx * 0.1 }}
-                className="aspect-video rounded-2xl overflow-hidden shadow-md hover:shadow-xl transition-all border-2 border-white group"
+                className="aspect-video rounded-3xl overflow-hidden shadow-2xl hover:shadow-primary/20 transition-all border-4 border-white group bg-white"
               >
                 <img 
                   src={img} 
@@ -255,20 +253,11 @@ export default function App() {
               </motion.div>
             ))}
           </motion.div>
-          <motion.p 
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 0.6 }}
-            viewport={{ once: true }}
-            className="text-center text-sm mt-8 font-medium tracking-widest uppercase italic"
-          >
-            Capturing the spirit of the stage
-          </motion.p>
-        </section>
-      </main>
+      </div>
 
       {/* Dark Footer */}
-      <footer className="bg-brand-blue text-white p-12 mt-12 text-center">
-        <div className="max-w-7xl mx-auto">
+      <footer className="bg-brand-blue text-white pt-24 pb-12 mt-0 text-center">
+        <div className="max-w-7xl mx-auto px-6">
           <div className="text-sm opacity-40">
             &copy; {new Date().getFullYear()} Open Mic Mapper. All rights reserved.
           </div>
