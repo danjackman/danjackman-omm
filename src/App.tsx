@@ -2,14 +2,23 @@ import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { Mail, MapPin, Music, ChevronRight, ChevronLeft, X, CheckCircle2, Loader2 } from 'lucide-react';
 
+import logo from './assets/logo.png';
+import mapLa from './assets/images/map_la_1779206307407.png';
+import mapSeattle from './assets/images/map_seattle_1779206321891.png';
+import mapSf from './assets/images/map_sf_1779206336978.png';
+import mapDallas from './assets/images/map_dallas_1779206350617.png';
+import mapChicago from './assets/images/map_chicago_1779206365221.png';
+import mapNashville from './assets/images/map_nashville_1779206381106.png';
+import mapNyc from './assets/images/map_nyc_1779206398350.png';
+
 const cities = [
-  { name: 'Los Angeles', image: './images/map_la_1779206307407.png' },
-  { name: 'Seattle', image: './images/map_seattle_1779206321891.png' },
-  { name: 'San Francisco', image: './images/map_sf_1779206336978.png' },
-  { name: 'Dallas', image: './images/map_dallas_1779206350617.png' },
-  { name: 'Chicago', image: './images/map_chicago_1779206365221.png' },
-  { name: 'Nashville', image: './images/map_nashville_1779206381106.png' },
-  { name: 'New York City', image: './images/map_nyc_1779206398350.png' },
+  { name: 'Los Angeles', image: mapLa },
+  { name: 'Seattle', image: mapSeattle },
+  { name: 'San Francisco', image: mapSf },
+  { name: 'Dallas', image: mapDallas },
+  { name: 'Chicago', image: mapChicago },
+  { name: 'Nashville', image: mapNashville },
+  { name: 'New York City', image: mapNyc },
 ];
 
 export default function App() {
@@ -70,12 +79,12 @@ export default function App() {
           className="flex items-center gap-3"
         >
           <img 
-            src="./logo.png" 
+            src={logo} 
             alt="Open Mic Mapper Logo" 
             className="h-12 md:h-16 object-contain"
             onError={(e) => {
               // Fallback for demo if logo is missing
-              (e.target as HTMLImageElement).src = 'https://placehold.co/200x80/0B0B3B/FFFFFF?text=Open+Mic+Mapper';
+              (e.target as HTMLImageElement).src = 'https://placehold.co/200x80/01041b/FFFFFF?text=Open+Mic+Mapper';
             }}
           />
         </motion.div>
@@ -220,19 +229,21 @@ export default function App() {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              onClick={() => setIsModalOpen(false)}
-              className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 transition-all"
+              onClick={() => {
+                setIsModalOpen(false);
+                setTimeout(() => setIsSubmitted(false), 300);
+              }}
+              className="fixed inset-0 bg-black/60 backdrop-blur-sm z-[55] transition-all cursor-pointer"
             />
             <motion.div 
               initial={{ opacity: 0, scale: 0.9, y: 20 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.9, y: 20 }}
-              className="fixed left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-lg bg-white rounded-[32px] shadow-2xl p-8 z-[60] overflow-hidden pointer-events-auto"
+              className="fixed left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-lg bg-white rounded-[32px] shadow-2xl p-8 z-[60] overflow-hidden"
             >
               <button 
                 type="button"
-                onClick={(e) => {
-                  e.stopPropagation();
+                onClick={() => {
                   setIsModalOpen(false);
                   setTimeout(() => setIsSubmitted(false), 300);
                 }}
