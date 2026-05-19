@@ -68,8 +68,8 @@ export default function App() {
               transition={{ delay: 0.3 }}
               className="text-lg md:text-xl text-on-surface opacity-80 mb-10 max-w-xl mx-auto lg:mx-0"
             >
-              Find every open mic night in your city. From dive bars to legendary stages, 
-              we're mapping the live music scene so you never miss a beat.
+              Find every open mic night in your city. From dive bars, coffee shops to legendary stages, 
+              we're mapping the live music, comedy, poetry, rap scene and more so you never miss a beat.
             </motion.p>
             
             <motion.div
@@ -170,34 +170,12 @@ export default function App() {
         </div>
       </main>
 
-      {/* Footer / Signup Area */}
-      <footer className="bg-brand-blue text-white p-12 text-center">
-        <div className="max-w-xl mx-auto">
-          <h2 className="text-3xl font-bold mb-4 font-display">Join the Waiting List</h2>
-          <p className="opacity-70 mb-8">
-            Be the first to explore the map when we go live. We're currently building out the database across the US.
-          </p>
-          
-          <div className="bg-white/10 p-4 rounded-3xl backdrop-blur-sm border border-white/10">
-             <p className="text-sm opacity-60 italic mb-2">Web3Forms placeholder section</p>
-             <div className="flex gap-2">
-                <input 
-                  type="email" 
-                  placeholder="your@email.com" 
-                  className="flex-1 bg-white/5 border border-white/20 rounded-xl px-4 py-3 outline-none focus:border-brand-purple transition-all"
-                />
-                <button className="bg-white text-brand-blue px-6 py-3 rounded-xl font-bold hover:bg-brand-purple hover:text-white transition-all">
-                  Sign Up
-                </button>
-             </div>
-             <p className="mt-4 text-xs opacity-50">
-               * User can paste the Web3Forms HTML into index.html or replace this div.
-             </p>
+      {/* Dark Footer */}
+      <footer className="bg-brand-blue text-white p-12 mt-12 text-center">
+        <div className="max-w-7xl mx-auto">
+          <div className="text-sm opacity-40">
+            &copy; {new Date().getFullYear()} Open Mic Mapper. All rights reserved.
           </div>
-        </div>
-        
-        <div className="mt-16 pt-8 border-t border-white/10 text-sm opacity-40">
-          &copy; {new Date().getFullYear()} Open Mic Mapper. All rights reserved.
         </div>
       </footer>
     </div>
