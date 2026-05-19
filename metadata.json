@@ -1,0 +1,6 @@
+{
+  "name": "Open Mic Mapper",
+  "description": "Find open mic nights in your area with our interactive map.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
