@@ -11,6 +11,18 @@ import mapChicago from './assets/images/map_chicago_1779206365221.png';
 import mapNashville from './assets/images/map_nashville_1779206381106.png';
 import mapNyc from './assets/images/map_nyc_1779206398350.png';
 
+// Import performance images
+import perf1 from './assets/images/performance_comedian_1779221506719.png';
+import perf2 from './assets/images/performance_singer_piano_1779221521191.png';
+import perf3 from './assets/images/performance_rapper_1779221540079.png';
+import perf4 from './assets/images/performance_guitarist_close_1779221554366.png';
+import perf5 from './assets/images/performance_poet_1779221570203.png';
+import perf6 from './assets/images/performance_clown_sign_1779221584582.png';
+import perf7 from './assets/images/performance_jazz_trio_1779221600307.png';
+import perf8 from './assets/images/performance_ballad_singer_1779221618285.png';
+
+const performanceImages = [perf1, perf2, perf3, perf4, perf5, perf6, perf7, perf8];
+
 const cities = [
   { name: 'Los Angeles', image: mapLa },
   { name: 'Seattle', image: mapSeattle },
@@ -27,11 +39,17 @@ export default function App() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [formData, setFormData] = useState({ name: '', email: '', message: '' });
+  const [shuffledGallery, setShuffledGallery] = useState<string[]>([]);
 
   useEffect(() => {
     const timer = setInterval(() => {
       setCurrentCityIndex((prev) => (prev + 1) % cities.length);
     }, 5000);
+
+    // Shuffle performance images
+    const shuffled = [...performanceImages].sort(() => Math.random() - 0.5);
+    setShuffledGallery(shuffled);
+
     return () => clearInterval(timer);
   }, []);
 
@@ -210,6 +228,42 @@ export default function App() {
             </motion.div>
           </div>
         </div>
+
+        {/* Randomized Performance Gallery */}
+        <section className="w-full mt-24 mb-12">
+          <motion.div 
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="grid grid-cols-2 md:grid-cols-4 gap-4"
+          >
+            {shuffledGallery.map((img, idx) => (
+              <motion.div
+                key={idx}
+                initial={{ opacity: 0, scale: 0.9 }}
+                whileInView={{ opacity: 1, scale: 1 }}
+                viewport={{ once: true }}
+                transition={{ delay: idx * 0.1 }}
+                className="aspect-video rounded-2xl overflow-hidden shadow-md hover:shadow-xl transition-all border-2 border-white group"
+              >
+                <img 
+                  src={img} 
+                  alt={`Performance ${idx + 1}`}
+                  referrerPolicy="no-referrer"
+                  className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                />
+              </motion.div>
+            ))}
+          </motion.div>
+          <motion.p 
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 0.6 }}
+            viewport={{ once: true }}
+            className="text-center text-sm mt-8 font-medium tracking-widest uppercase italic"
+          >
+            Capturing the spirit of the stage
+          </motion.p>
+        </section>
       </main>
 
       {/* Dark Footer */}
