@@ -3,13 +3,13 @@ import { motion, AnimatePresence } from 'motion/react';
 import { Mail, MapPin, Music, ChevronRight, ChevronLeft, X, CheckCircle2, Loader2 } from 'lucide-react';
 
 const cities = [
-  { name: 'Los Angeles', image: '/images/map_la_1779206307407.png' },
-  { name: 'Seattle', image: '/images/map_seattle_1779206321891.png' },
-  { name: 'San Francisco', image: '/images/map_sf_1779206336978.png' },
-  { name: 'Dallas', image: '/images/map_dallas_1779206350617.png' },
-  { name: 'Chicago', image: '/images/map_chicago_1779206365221.png' },
-  { name: 'Nashville', image: '/images/map_nashville_1779206381106.png' },
-  { name: 'New York City', image: '/images/map_nyc_1779206398350.png' },
+  { name: 'Los Angeles', image: './images/map_la_1779206307407.png' },
+  { name: 'Seattle', image: './images/map_seattle_1779206321891.png' },
+  { name: 'San Francisco', image: './images/map_sf_1779206336978.png' },
+  { name: 'Dallas', image: './images/map_dallas_1779206350617.png' },
+  { name: 'Chicago', image: './images/map_chicago_1779206365221.png' },
+  { name: 'Nashville', image: './images/map_nashville_1779206381106.png' },
+  { name: 'New York City', image: './images/map_nyc_1779206398350.png' },
 ];
 
 export default function App() {
@@ -70,7 +70,7 @@ export default function App() {
           className="flex items-center gap-3"
         >
           <img 
-            src="/logo.png" 
+            src="./logo.png" 
             alt="Open Mic Mapper Logo" 
             className="h-12 md:h-16 object-contain"
             onError={(e) => {
@@ -227,14 +227,17 @@ export default function App() {
               initial={{ opacity: 0, scale: 0.9, y: 20 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.9, y: 20 }}
-              className="fixed left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-lg bg-white rounded-[32px] shadow-2xl p-8 z-[60] overflow-hidden"
+              className="fixed left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-lg bg-white rounded-[32px] shadow-2xl p-8 z-[60] overflow-hidden pointer-events-auto"
             >
               <button 
-                onClick={() => {
+                type="button"
+                onClick={(e) => {
+                  e.stopPropagation();
                   setIsModalOpen(false);
                   setTimeout(() => setIsSubmitted(false), 300);
                 }}
-                className="absolute right-6 top-6 p-2 rounded-full hover:bg-gray-100 transition-colors text-gray-400 hover:text-gray-900"
+                className="absolute right-6 top-6 p-2 rounded-full hover:bg-gray-100 transition-colors text-gray-400 hover:text-gray-900 z-[70] cursor-pointer"
+                aria-label="Close modal"
               >
                 <X size={24} />
               </button>
