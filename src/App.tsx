@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { Mail, MapPin, Music, ChevronRight, ChevronLeft } from 'lucide-react';
+import { Mail, MapPin, Music, ChevronRight, ChevronLeft, X, CheckCircle2, Loader2 } from 'lucide-react';
 
 const cities = [
   { name: 'Los Angeles', image: '/src/assets/images/map_la_1779206307407.png' },
@@ -14,6 +14,10 @@ const cities = [
 
 export default function App() {
   const [currentCityIndex, setCurrentCityIndex] = useState(0);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isSubmitted, setIsSubmitted] = useState(false);
+  const [formData, setFormData] = useState({ name: '', email: '', message: '' });
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -21,6 +25,37 @@ export default function App() {
     }, 5000);
     return () => clearInterval(timer);
   }, []);
+
+  const handleNotifyMe = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsSubmitting(true);
+
+    try {
+      const response = await fetch("https://api.web3forms.com/submit", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+        },
+        body: JSON.stringify({
+          access_key: "d04e622b-d99b-4a3b-9a11-7ba654897e6d",
+          name: formData.name,
+          email: formData.email,
+          message: formData.message || "New signup for waiting list",
+        }),
+      });
+
+      const result = await response.json();
+      if (result.success) {
+        setIsSubmitted(true);
+      }
+    } catch (error) {
+      console.error("Error submitting form", error);
+      alert("Something went wrong. Please try again.");
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
 
   const nextCity = () => setCurrentCityIndex((prev) => (prev + 1) % cities.length);
   const prevCity = () => setCurrentCityIndex((prev) => (prev - 1 + cities.length) % cities.length);
@@ -79,9 +114,7 @@ export default function App() {
               className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start"
             >
               <button 
-                onClick={() => {
-                   window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
-                }}
+                onClick={() => setIsModalOpen(true)}
                 className="bg-primary hover:bg-primary/90 text-on-primary px-8 py-4 rounded-2xl text-lg font-semibold flex items-center justify-center gap-2 transition-all shadow-lg hover:shadow-xl active:scale-95"
               >
                 <Mail size={20} />
@@ -178,6 +211,129 @@ export default function App() {
           </div>
         </div>
       </footer>
+
+      {/* Modal Backdrop and Content */}
+      <AnimatePresence>
+        {isModalOpen && (
+          <>
+            <motion.div 
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={() => setIsModalOpen(false)}
+              className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 transition-all"
+            />
+            <motion.div 
+              initial={{ opacity: 0, scale: 0.9, y: 20 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.9, y: 20 }}
+              className="fixed left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-lg bg-white rounded-[32px] shadow-2xl p-8 z-[60] overflow-hidden"
+            >
+              <button 
+                onClick={() => {
+                  setIsModalOpen(false);
+                  setTimeout(() => setIsSubmitted(false), 300);
+                }}
+                className="absolute right-6 top-6 p-2 rounded-full hover:bg-gray-100 transition-colors text-gray-400 hover:text-gray-900"
+              >
+                <X size={24} />
+              </button>
+
+              <div className="relative">
+                <AnimatePresence mode="wait">
+                  {isSubmitted ? (
+                    <motion.div 
+                      key="success"
+                      initial={{ opacity: 0, y: 10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      className="text-center py-8"
+                    >
+                      <div className="inline-flex items-center justify-center w-16 h-16 bg-green-100 text-green-600 rounded-2xl mb-6">
+                        <CheckCircle2 size={32} />
+                      </div>
+                      <h2 className="text-3xl font-bold text-brand-blue font-display mb-2">You're on the list!</h2>
+                      <p className="text-gray-600 text-lg">We'll let you know the second the curtains rise in your city.</p>
+                      <button 
+                         onClick={() => {
+                           setIsModalOpen(false);
+                           setTimeout(() => setIsSubmitted(false), 300);
+                         }}
+                        className="mt-8 bg-brand-blue text-white w-full py-4 rounded-2xl font-bold hover:bg-brand-purple transition-all"
+                      >
+                        Great!
+                      </button>
+                    </motion.div>
+                  ) : (
+                    <motion.div 
+                      key="form"
+                      initial={{ opacity: 0, y: 10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: -10 }}
+                    >
+                      <div className="mb-8">
+                        <h2 className="text-3xl font-bold text-brand-blue font-display mb-2">Join the Watch</h2>
+                        <p className="text-gray-600">Be the first to see the map when we launch. Enter your details below.</p>
+                      </div>
+
+                      <form onSubmit={handleNotifyMe} className="space-y-4">
+                        <div>
+                          <label className="block text-sm font-semibold text-gray-700 mb-1 ml-1" htmlFor="name">Full Name</label>
+                          <input 
+                            required
+                            type="text" 
+                            id="name"
+                            placeholder="John Doe"
+                            value={formData.name}
+                            onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                            className="w-full bg-gray-50 border border-gray-200 rounded-2xl px-5 py-4 focus:outline-none focus:ring-2 focus:ring-brand-purple/20 focus:border-brand-purple transition-all"
+                          />
+                        </div>
+                        <div>
+                          <label className="block text-sm font-semibold text-gray-700 mb-1 ml-1" htmlFor="email">Email Address</label>
+                          <input 
+                            required
+                            type="email" 
+                            id="email"
+                            placeholder="john@example.com"
+                            value={formData.email}
+                            onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                            className="w-full bg-gray-50 border border-gray-200 rounded-2xl px-5 py-4 focus:outline-none focus:ring-2 focus:ring-brand-purple/20 focus:border-brand-purple transition-all"
+                          />
+                        </div>
+                        <div>
+                          <label className="block text-sm font-semibold text-gray-700 mb-1 ml-1" htmlFor="message">Note (Optional)</label>
+                          <textarea 
+                            id="message"
+                            rows={3}
+                            placeholder="Tell us your city..."
+                            value={formData.message}
+                            onChange={(e) => setFormData({ ...formData, message: e.target.value })}
+                            className="w-full bg-gray-50 border border-gray-200 rounded-2xl px-5 py-4 focus:outline-none focus:ring-2 focus:ring-brand-purple/20 focus:border-brand-purple transition-all resize-none"
+                          />
+                        </div>
+                        <button 
+                          disabled={isSubmitting}
+                          type="submit"
+                          className="w-full bg-brand-blue text-white py-5 rounded-2xl font-bold text-lg hover:bg-brand-purple transition-all flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed mt-4 shadow-lg hover:shadow-xl active:scale-95"
+                        >
+                          {isSubmitting ? (
+                            <>
+                              <Loader2 className="animate-spin" size={20} />
+                              Sending...
+                            </>
+                          ) : (
+                            'Sign Me Up'
+                          )}
+                        </button>
+                      </form>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </div>
+            </motion.div>
+          </>
+        )}
+      </AnimatePresence>
     </div>
   );
 }
